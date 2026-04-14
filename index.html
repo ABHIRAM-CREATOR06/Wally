@@ -81,6 +81,16 @@
       cursor: not-allowed;
     }
 
+    select {
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      border: 1px solid #c0bdb8;
+      background: #fff;
+      cursor: pointer;
+    }
+
     /* ── Main layout ── */
     #main {
       display: flex;
@@ -152,6 +162,7 @@
       gap: 8px;
       cursor: pointer;
       user-select: none;
+      margin-top: 8px;
     }
 
     .color-swatch {
@@ -276,6 +287,7 @@
       align-items: center;
       gap: 6px;
       margin-bottom: 9px;
+      margin-top: 8px;
     }
 
     .slider-row:last-child {
@@ -318,11 +330,12 @@
       display: inline-block;
       width: 16px;
       height: 16px;
-      border: 2px solid #f3f3f3;
-      border-top: 2px solid #1a1a1a;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top: 2px solid #fff;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-left: 8px;
+      vertical-align: middle;
     }
 
     @keyframes spin {
@@ -341,7 +354,6 @@
         overflow: hidden;
       }
 
-      /* Topbar: hide secondary buttons, keep Reset + Export 8K */
       #import-config-btn,
       #export-config-btn {
         display: none;
@@ -356,13 +368,11 @@
         font-size: 13px;
       }
 
-      /* Main column layout */
       #main {
         flex-direction: column;
         overflow: hidden;
       }
 
-      /* Canvas: top portion */
       #canvas-area {
         flex: 0 0 auto;
         height: 38vh;
@@ -374,7 +384,6 @@
         display: none;
       }
 
-      /* Mobile tab bar */
       #mobile-tabs {
         display: flex;
         order: 2;
@@ -402,7 +411,6 @@
         border-bottom-color: #1a1a1a;
       }
 
-      /* Panels: hidden by default on mobile, shown when active */
       .panel {
         display: none;
         order: 3;
@@ -416,7 +424,6 @@
         display: block;
       }
 
-      /* Touch target sizing */
       .ratio-btn {
         padding: 8px 12px;
         font-size: 13px;
@@ -462,16 +469,15 @@
     <button class="btn btn-outline" id="undo-btn" disabled>Undo</button>
     <button class="btn btn-outline" id="redo-btn" disabled>Redo</button>
     <button class="btn btn-outline" id="reset-btn">Reset</button>
-    <button class="btn btn-outline" id="save-project-btn">Save Project</button>
-    <button class="btn btn-outline" id="load-project-btn">Load Project</button>
+    <button class="btn btn-outline" id="save-project-btn">Save</button>
+    <button class="btn btn-outline" id="load-project-btn">Load</button>
     <button class="btn btn-outline" id="share-btn">Share</button>
-    <button class="btn btn-outline" id="import-config-btn">Import Config</button>
+    <button class="btn btn-outline" id="import-config-btn">Import</button>
     <button class="btn btn-outline" id="export-config-btn">Export Config</button>
     <select id="export-resolution">
-      <option value="1920x1080">1080p (1920x1080)</option>
-      <option value="3840x2160">4K (3840x2160)</option>
-      <option value="7680x4320" selected>8K (7680x4320)</option>
-      <option value="custom">Custom</option>
+      <option value="1920x1080">1080p</option>
+      <option value="3840x2160">4K</option>
+      <option value="7680x4320" selected>8K</option>
     </select>
     <select id="export-format">
       <option value="png" selected>PNG</option>
@@ -482,6 +488,7 @@
     <button class="btn btn-dark" id="export-btn">Export</button>
   </div>
 </div>
+
 <input type="file" id="import-config-input" accept=".json">
 <label id="color-pick-trigger" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;"></label>
 
@@ -495,10 +502,10 @@
       <div class="section-label">Canvas Ratio</div>
       <div class="btn-group" id="ratio-group">
         <button class="ratio-btn active" data-ratio="16:9">16:9</button>
-        <button class="ratio-btn"        data-ratio="4:3">4:3</button>
-        <button class="ratio-btn"        data-ratio="1:1">1:1</button>
-        <button class="ratio-btn"        data-ratio="21:9">21:9</button>
-        <button class="ratio-btn"        data-ratio="9:16">9:16</button>
+        <button class="ratio-btn" data-ratio="4:3">4:3</button>
+        <button class="ratio-btn" data-ratio="1:1">1:1</button>
+        <button class="ratio-btn" data-ratio="21:9">21:9</button>
+        <button class="ratio-btn" data-ratio="9:16">9:16</button>
       </div>
     </div>
 
@@ -515,7 +522,7 @@
         </label>
         <input type="color" id="bg-color-input" value="#F2EDDF">
       </div>
-      <div id="bg-gradient-controls" style="display: none;">
+      <div id="bg-gradient-controls" style="display:none;">
         <label class="color-row" for="bg-gradient-color1-input">
           <div class="color-swatch" id="bg-gradient-swatch1"></div>
           <span class="color-hex" id="bg-gradient-hex1">#F2EDDF</span>
@@ -526,7 +533,7 @@
           <span class="color-hex" id="bg-gradient-hex2">#FFFFFF</span>
         </label>
         <input type="color" id="bg-gradient-color2-input" value="#FFFFFF">
-        <select id="bg-gradient-direction">
+        <select id="bg-gradient-direction" style="width:100%;margin-top:8px;">
           <option value="to bottom">Vertical</option>
           <option value="to right">Horizontal</option>
           <option value="to bottom right">Diagonal</option>
@@ -545,7 +552,7 @@
         <button class="ratio-btn" id="stack-left-btn">Left on top</button>
         <button class="ratio-btn active" id="stack-right-btn">Right on top</button>
       </div>
-      <button class="btn btn-outline" id="reverse-order-btn" style="margin-top: 8px; width: 100%;">Reverse Color Order</button>
+      <button class="btn btn-outline" id="reverse-order-btn" style="margin-top:8px;width:100%;">Reverse Colors</button>
     </div>
 
     <div class="panel-section">
@@ -559,7 +566,7 @@
     <div class="panel-section">
       <div class="section-label">Presets</div>
       <div class="presets-grid" id="presets-grid"></div>
-      <button class="btn btn-outline" id="randomize-btn" style="margin-top: 10px; width: 100%;">Randomize</button>
+      <button class="btn btn-outline" id="randomize-btn" style="margin-top:10px;width:100%;">Randomize</button>
     </div>
 
   </div>
@@ -587,7 +594,7 @@
 
     <div class="panel-section">
       <div class="section-label">Shape</div>
-      <select id="shape-select">
+      <select id="shape-select" style="width:100%;margin-bottom:8px;">
         <option value="rounded-rect" selected>Rounded Rectangle</option>
         <option value="circle">Circle</option>
         <option value="triangle">Triangle</option>
@@ -684,11 +691,11 @@ const PRESET_GROUPS = [
   {
     label: 'Pastel',
     presets: [
-      { name: 'Blush',    bg: '#FFF5F8', pillars: ['#FFE8F0','#FDDAE6','#FBCADC','#F9BAD2','#F7AAC8','#F59ABE','#F08AB2','#E878A4','#E06696','#D55488'] },
-      { name: 'Mint',     bg: '#F5FFF9', pillars: ['#E8FFF3','#D4FAEB','#C0F5E3','#AAEFD9','#96E8D0','#82E0C6','#6ED8BC','#5ACDB0','#46C2A4','#32B698'] },
-      { name: 'Powder',   bg: '#F5F8FF', pillars: ['#E8F0FF','#D4E2FF','#C0D4FF','#ACC6FF','#98B8FF','#84AAFF','#7099F5','#5C88EB','#4878E0','#3468D5'] },
-      { name: 'Peach',    bg: '#FFF8F3', pillars: ['#FFF0E8','#FFE6D8','#FFDCC8','#FFD2B8','#FFC8A8','#F5BD95','#EBB280','#E1A76C','#D79C58','#CD9144'] },
-      { name: 'Lilac',    bg: '#FAF5FF', pillars: ['#F5EAFF','#EEDBFF','#E7CCFF','#E0BDFF','#D9AEFF','#CF9FF5','#C590EC','#BB81E2','#B172D8','#A763CE'] },
+      { name: 'Blush',   bg: '#FFF5F8', pillars: ['#FFE8F0','#FDDAE6','#FBCADC','#F9BAD2','#F7AAC8','#F59ABE','#F08AB2','#E878A4','#E06696','#D55488'] },
+      { name: 'Mint',    bg: '#F5FFF9', pillars: ['#E8FFF3','#D4FAEB','#C0F5E3','#AAEFD9','#96E8D0','#82E0C6','#6ED8BC','#5ACDB0','#46C2A4','#32B698'] },
+      { name: 'Powder',  bg: '#F5F8FF', pillars: ['#E8F0FF','#D4E2FF','#C0D4FF','#ACC6FF','#98B8FF','#84AAFF','#7099F5','#5C88EB','#4878E0','#3468D5'] },
+      { name: 'Peach',   bg: '#FFF8F3', pillars: ['#FFF0E8','#FFE6D8','#FFDCC8','#FFD2B8','#FFC8A8','#F5BD95','#EBB280','#E1A76C','#D79C58','#CD9144'] },
+      { name: 'Lilac',   bg: '#FAF5FF', pillars: ['#F5EAFF','#EEDBFF','#E7CCFF','#E0BDFF','#D9AEFF','#CF9FF5','#C590EC','#BB81E2','#B172D8','#A763CE'] },
     ],
   },
 ];
@@ -717,7 +724,7 @@ let historyIndex = -1;
 let state = {
   ratio: DEFAULTS.ratio,
   bgColor: DEFAULTS.bgColor,
-  bgGradient: { ...DEFAULTS.bgGradient },
+  bgGradient: { ...DEFAULTS.bgGradient, colors: [...DEFAULTS.bgGradient.colors] },
   pillarCount: DEFAULTS.pillarCount,
   pillarColors: [...DEFAULTS.pillarColors],
   shape: DEFAULTS.shape,
@@ -757,23 +764,23 @@ function saveState() {
 function undo() {
   if (historyIndex > 0) {
     historyIndex--;
-    Object.assign(state, history[historyIndex]);
-    syncUI();
-    buildPillarSwatches();
-    redraw();
-    updateUndoRedoButtons();
+    applyStateSnapshot(history[historyIndex]);
   }
 }
 
 function redo() {
   if (historyIndex < history.length - 1) {
     historyIndex++;
-    Object.assign(state, history[historyIndex]);
-    syncUI();
-    buildPillarSwatches();
-    redraw();
-    updateUndoRedoButtons();
+    applyStateSnapshot(history[historyIndex]);
   }
+}
+
+function applyStateSnapshot(snapshot) {
+  Object.assign(state, JSON.parse(JSON.stringify(snapshot)));
+  syncUI();
+  buildPillarSwatches();
+  redraw();
+  updateUndoRedoButtons();
 }
 
 function updateUndoRedoButtons() {
@@ -788,20 +795,60 @@ function ratioAspect(ratio) {
   return a / b;
 }
 
-// Draw a rounded rectangle path (no fill/stroke).
+// Hex color → { r, g, b }
+function hexToRgb(hex) {
+  const n = parseInt(hex.replace('#', ''), 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+
+// Apply a shade (darken) factor 0‒1 to a hex color
+function shadeColor(hex, factor) {
+  const { r, g, b } = hexToRgb(hex);
+  const f = 1 - factor;
+  const toHex = (v) => Math.round(v * f).toString(16).padStart(2, '0');
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+// Draw a rounded rectangle path
 function roundRectPath(c, x, y, w, h, r) {
   r = Math.min(r, w / 2, h / 2);
   c.beginPath();
   c.moveTo(x + r, y);
   c.lineTo(x + w - r, y);
-  c.quadraticCurveTo(x + w, y,     x + w, y + r);
+  c.quadraticCurveTo(x + w, y, x + w, y + r);
   c.lineTo(x + w, y + h - r);
   c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
   c.lineTo(x + r, y + h);
-  c.quadraticCurveTo(x,     y + h, x,     y + h - r);
+  c.quadraticCurveTo(x, y + h, x, y + h - r);
   c.lineTo(x, y + r);
-  c.quadraticCurveTo(x,     y,     x + r, y);
+  c.quadraticCurveTo(x, y, x + r, y);
   c.closePath();
+}
+
+// Draw a single pillar shape on canvas context c
+function drawShape(c, x, y, w, h, shape, rx) {
+  c.beginPath();
+  switch (shape) {
+    case 'rounded-rect':
+      roundRectPath(c, x, y, w, h, rx);
+      break;
+    case 'circle': {
+      const cx = x + w / 2;
+      const cy = y + h / 2;
+      const radius = Math.min(w, h) / 2;
+      c.arc(cx, cy, radius, 0, 2 * Math.PI);
+      break;
+    }
+    case 'triangle':
+      c.moveTo(x + w / 2, y);
+      c.lineTo(x, y + h);
+      c.lineTo(x + w, y + h);
+      c.closePath();
+      break;
+    default:
+      roundRectPath(c, x, y, w, h, rx);
+  }
+  c.fill();
 }
 
 // ── Canvas sizing ──────────────────────────────────────────────────────────────
@@ -827,33 +874,88 @@ function fitCanvas() {
   canvasLabel.textContent = `Preview — exports at ${dims.w} \u00d7 ${dims.h} px`;
 }
 
-// ── Draw ───────────────────────────────────────────────────────────────────────
-
-function drawShape(c, x, y, w, h, shape, rx) {
-  c.beginPath();
-  switch (shape) {
-    case 'rounded-rect':
-      roundRectPath(c, x, y, w, h, rx);
-      break;
-    case 'circle':
-      const centerX = x + w / 2;
-      const centerY = y + h / 2;
-      const radius = Math.min(w, h) / 2;
-      c.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      break;
-    case 'triangle':
-      c.moveTo(x + w / 2, y);
-      c.lineTo(x, y + h);
-      c.lineTo(x + w, y + h);
-      c.closePath();
-      break;
-  }
-  c.fill();
-}
+// ── Core Draw Function ─────────────────────────────────────────────────────────
 
 function draw(c, cw, ch) {
-  c.fillStyle = 'blue';
+  const {
+    bgColor, bgGradient,
+    pillarCount, pillarColors,
+    shape, roundness,
+    pillarWidthPct, pillarHeightPct,
+    overlapPct, shadePct,
+    stackReversed, flipped,
+  } = state;
+
+  // ── Background ──
+  if (bgGradient.enabled) {
+    let grad;
+    const dir = bgGradient.direction;
+    if (dir === 'to right') {
+      grad = c.createLinearGradient(0, 0, cw, 0);
+    } else if (dir === 'to bottom right') {
+      grad = c.createLinearGradient(0, 0, cw, ch);
+    } else {
+      // to bottom (default)
+      grad = c.createLinearGradient(0, 0, 0, ch);
+    }
+    grad.addColorStop(0, bgGradient.colors[0]);
+    grad.addColorStop(1, bgGradient.colors[1]);
+    c.fillStyle = grad;
+  } else {
+    c.fillStyle = bgColor;
+  }
   c.fillRect(0, 0, cw, ch);
+
+  // ── Pillar geometry ──
+  const pillarW = flipped ? ch * pillarWidthPct / 100 : cw * pillarWidthPct / 100;
+  const pillarH = flipped ? cw * pillarHeightPct / 100 : ch * pillarHeightPct / 100;
+  const step    = pillarW * (1 - overlapPct / 100);
+  const totalW  = pillarW + step * (pillarCount - 1);
+  const rx      = (pillarW / 2) * (roundness / 100);
+  const shadeFactor = shadePct / 100;
+
+  // Draw order: stackReversed = left on top (draw right first), else right on top (draw left first)
+  const drawOrder = stackReversed
+    ? Array.from({ length: pillarCount }, (_, k) => pillarCount - 1 - k)
+    : Array.from({ length: pillarCount }, (_, k) => k);
+
+  if (flipped) {
+    const startY = (ch - totalW) / 2;
+    const startX = (cw - pillarH) / 2;
+
+    for (let di = 0; di < drawOrder.length; di++) {
+      const i = drawOrder[di];
+      const y = startY + i * step;
+      let color = pillarColors[i] !== undefined ? pillarColors[i] : pillarColors[pillarColors.length - 1];
+
+      // Apply progressive shade: pillars drawn later (on top visually) get darker
+      if (shadeFactor > 0) {
+        const progress = stackReversed ? (pillarCount - 1 - i) / (pillarCount - 1) : i / (pillarCount - 1);
+        color = shadeColor(color, shadeFactor * progress * 0.6);
+      }
+
+      c.fillStyle = color;
+      drawShape(c, startX, y, pillarH, pillarW, shape, rx);
+    }
+  } else {
+    const startX = (cw - totalW) / 2;
+    const startY = (ch - pillarH) / 2;
+
+    for (let di = 0; di < drawOrder.length; di++) {
+      const i = drawOrder[di];
+      const x = startX + i * step;
+      let color = pillarColors[i] !== undefined ? pillarColors[i] : pillarColors[pillarColors.length - 1];
+
+      // Apply progressive shade
+      if (shadeFactor > 0) {
+        const progress = stackReversed ? (pillarCount - 1 - i) / (pillarCount - 1) : i / (pillarCount - 1);
+        color = shadeColor(color, shadeFactor * progress * 0.6);
+      }
+
+      c.fillStyle = color;
+      drawShape(c, x, startY, pillarW, pillarH, shape, rx);
+    }
+  }
 }
 
 function redraw() {
@@ -862,12 +964,12 @@ function redraw() {
   saveState();
 }
 
-// ── Hit testing ────────────────────────────────────────────────────────────────
+// ── Hit Testing ────────────────────────────────────────────────────────────────
 
 function hitTestCanvas(clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
   const mx = (clientX - rect.left) * (canvas.width / rect.width);
-  const my = (clientY - rect.top) * (canvas.height / rect.height);
+  const my = (clientY - rect.top)  * (canvas.height / rect.height);
 
   const cw = canvas.width;
   const ch = canvas.height;
@@ -878,9 +980,10 @@ function hitTestCanvas(clientX, clientY) {
   const step    = pillarW * (1 - overlapPct / 100);
   const totalW  = pillarW + step * (pillarCount - 1);
 
+  // Test in reverse draw order so topmost pillar wins
   const hitOrder = state.stackReversed
-    ? Array.from({ length: pillarCount }, (_, k) => k)
-    : Array.from({ length: pillarCount }, (_, k) => pillarCount - 1 - k);
+    ? Array.from({ length: pillarCount }, (_, k) => pillarCount - 1 - k)
+    : Array.from({ length: pillarCount }, (_, k) => k);
 
   if (flipped) {
     const startY = (ch - totalW) / 2;
@@ -904,8 +1007,63 @@ function hitTestCanvas(clientX, clientY) {
   return -1;
 }
 
+// ── Canvas interaction ─────────────────────────────────────────────────────────
+
+let isDraggingPillar = false;
+let draggedPillarIndex = -1;
+
 canvas.addEventListener('mousedown', (e) => {
-  hitTestCanvas(e.clientX, e.clientY);
+  const pillarIndex = hitTestCanvas(e.clientX, e.clientY);
+  if (pillarIndex === -1) return;
+
+  if (e.shiftKey) {
+    isDraggingPillar = true;
+    draggedPillarIndex = pillarIndex;
+    canvas.style.cursor = 'grabbing';
+    e.preventDefault();
+  } else {
+    const trigger = document.getElementById('color-pick-trigger');
+    trigger.htmlFor = `pillar-input-${pillarIndex}`;
+    trigger.click();
+  }
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDraggingPillar) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+  const my = (e.clientY - rect.top)  * (canvas.height / rect.height);
+
+  const { pillarCount, pillarWidthPct, overlapPct, flipped } = state;
+  const pillarW = flipped ? canvas.height * pillarWidthPct / 100 : canvas.width * pillarWidthPct / 100;
+  const step    = pillarW * (1 - overlapPct / 100);
+  const totalW  = pillarW + step * (pillarCount - 1);
+
+  let newIndex;
+  if (flipped) {
+    const startY = (canvas.height - totalW) / 2;
+    newIndex = Math.round((my - startY) / step);
+  } else {
+    const startX = (canvas.width - totalW) / 2;
+    newIndex = Math.round((mx - startX) / step);
+  }
+  newIndex = Math.max(0, Math.min(pillarCount - 1, newIndex));
+
+  if (newIndex !== draggedPillarIndex) {
+    [state.pillarColors[draggedPillarIndex], state.pillarColors[newIndex]] =
+      [state.pillarColors[newIndex], state.pillarColors[draggedPillarIndex]];
+    draggedPillarIndex = newIndex;
+    buildPillarSwatches();
+    redraw();
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  if (isDraggingPillar) {
+    isDraggingPillar = false;
+    canvas.style.cursor = 'crosshair';
+  }
 });
 
 canvas.addEventListener('touchend', (e) => {
@@ -919,6 +1077,8 @@ canvas.addEventListener('touchend', (e) => {
   }
 });
 
+canvas.style.cursor = 'crosshair';
+
 // ── Build pillar swatches ──────────────────────────────────────────────────────
 
 function buildPillarSwatches() {
@@ -930,15 +1090,14 @@ function buildPillarSwatches() {
       ? state.pillarColors[i]
       : state.pillarColors[state.pillarColors.length - 1];
 
-    // Swatch item
-    const item   = document.createElement('label');
+    const item = document.createElement('label');
     item.className = 'pillar-swatch-item';
     item.title = `Pillar ${i + 1}`;
     item.htmlFor = `pillar-input-${i}`;
 
     const swatch = document.createElement('div');
     swatch.className = 'color-swatch';
-    swatch.id        = `pillar-swatch-${i}`;
+    swatch.id = `pillar-swatch-${i}`;
     swatch.style.background = color;
 
     const num = document.createElement('span');
@@ -949,7 +1108,6 @@ function buildPillarSwatches() {
     item.appendChild(num);
     pillarsGrid.appendChild(item);
 
-    // Hidden color input
     const input = document.createElement('input');
     input.type  = 'color';
     input.id    = `pillar-input-${i}`;
@@ -966,9 +1124,9 @@ function buildPillarSwatches() {
 // ── Build preset swatches ──────────────────────────────────────────────────────
 
 function makePresetSwatch(preset) {
-  const wrap  = document.createElement('div');
+  const wrap = document.createElement('div');
   wrap.className = 'preset-swatch';
-  wrap.title  = preset.name;
+  wrap.title = preset.name;
 
   const inner = document.createElement('div');
   inner.className = 'preset-inner';
@@ -1002,19 +1160,12 @@ function buildPresets() {
 }
 
 function applyPreset(preset) {
-  state.bgColor      = preset.bg;
+  state.bgColor = preset.bg;
   state.bgGradient.enabled = false;
   state.pillarColors = [...preset.pillars];
   state.pillarCount  = preset.pillars.length;
-
-  document.getElementById('bg-swatch').style.background = state.bgColor;
-  document.getElementById('bg-hex').textContent         = state.bgColor.toUpperCase();
-  document.getElementById('bg-color-input').value       = state.bgColor;
-  document.getElementById('pillar-count-slider').value  = state.pillarCount;
-  document.getElementById('pillar-count-label').textContent = state.pillarCount;
-
-  buildPillarSwatches();
   syncUI();
+  buildPillarSwatches();
   redraw();
 }
 
@@ -1022,73 +1173,82 @@ function applyPreset(preset) {
 
 function syncUI() {
   // Ratio buttons
-  document.querySelectorAll('.ratio-btn').forEach((btn) => {
+  document.querySelectorAll('#ratio-group .ratio-btn').forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.ratio === state.ratio);
   });
+
+  // Bg type
+  document.getElementById('bg-solid-btn').classList.toggle('active', !state.bgGradient.enabled);
+  document.getElementById('bg-gradient-btn').classList.toggle('active', state.bgGradient.enabled);
+  document.getElementById('bg-solid-controls').style.display    = state.bgGradient.enabled ? 'none'  : 'block';
+  document.getElementById('bg-gradient-controls').style.display = state.bgGradient.enabled ? 'block' : 'none';
+
   // Bg color
   document.getElementById('bg-swatch').style.background = state.bgColor;
   document.getElementById('bg-hex').textContent         = state.bgColor.toUpperCase();
   document.getElementById('bg-color-input').value       = state.bgColor;
-  // Bg gradient
-  document.getElementById('bg-solid-btn').classList.toggle('active', !state.bgGradient.enabled);
-  document.getElementById('bg-gradient-btn').classList.toggle('active', state.bgGradient.enabled);
-  document.getElementById('bg-solid-controls').style.display = state.bgGradient.enabled ? 'none' : 'block';
-  document.getElementById('bg-gradient-controls').style.display = state.bgGradient.enabled ? 'block' : 'none';
+
+  // Gradient colors
   document.getElementById('bg-gradient-swatch1').style.background = state.bgGradient.colors[0];
-  document.getElementById('bg-gradient-hex1').textContent = state.bgGradient.colors[0].toUpperCase();
-  document.getElementById('bg-gradient-color1-input').value = state.bgGradient.colors[0];
+  document.getElementById('bg-gradient-hex1').textContent         = state.bgGradient.colors[0].toUpperCase();
+  document.getElementById('bg-gradient-color1-input').value       = state.bgGradient.colors[0];
   document.getElementById('bg-gradient-swatch2').style.background = state.bgGradient.colors[1];
-  document.getElementById('bg-gradient-hex2').textContent = state.bgGradient.colors[1].toUpperCase();
-  document.getElementById('bg-gradient-color2-input').value = state.bgGradient.colors[1];
-  document.getElementById('bg-gradient-direction').value = state.bgGradient.direction;
+  document.getElementById('bg-gradient-hex2').textContent         = state.bgGradient.colors[1].toUpperCase();
+  document.getElementById('bg-gradient-color2-input').value       = state.bgGradient.colors[1];
+  document.getElementById('bg-gradient-direction').value          = state.bgGradient.direction;
+
   // Pillar count
   document.getElementById('pillar-count-slider').value      = state.pillarCount;
   document.getElementById('pillar-count-label').textContent = state.pillarCount;
+
   // Shape
   document.getElementById('shape-select').value = state.shape;
   document.getElementById('roundness-row').style.display = state.shape === 'rounded-rect' ? 'flex' : 'none';
+
   // Shape sliders
-  document.getElementById('roundness-slider').value = state.roundness;
-  document.getElementById('roundness-value').textContent  = state.roundness;
-  document.getElementById('width-slider').value    = state.pillarWidthPct;
+  document.getElementById('roundness-slider').value      = state.roundness;
+  document.getElementById('roundness-value').textContent = state.roundness;
+  document.getElementById('width-slider').value          = state.pillarWidthPct;
   document.getElementById('width-value').textContent     = state.pillarWidthPct;
-  document.getElementById('height-slider').value   = state.pillarHeightPct;
+  document.getElementById('height-slider').value         = state.pillarHeightPct;
   document.getElementById('height-value').textContent    = state.pillarHeightPct;
-  document.getElementById('overlap-slider').value  = state.overlapPct;
+  document.getElementById('overlap-slider').value        = state.overlapPct;
   document.getElementById('overlap-value').textContent   = state.overlapPct;
-  document.getElementById('shade-slider').value   = state.shadePct;
+  document.getElementById('shade-slider').value          = state.shadePct;
   document.getElementById('shade-value').textContent     = state.shadePct;
+
   // Stack order
   document.getElementById('stack-left-btn').classList.toggle('active',  state.stackReversed);
   document.getElementById('stack-right-btn').classList.toggle('active', !state.stackReversed);
-  // Flip (orientation)
+
+  // Flip / orientation
   document.getElementById('flip-off-btn').classList.toggle('active', !state.flipped);
-  document.getElementById('flip-on-btn').classList.toggle('active', state.flipped);
+  document.getElementById('flip-on-btn').classList.toggle('active',   state.flipped);
 }
 
 // ── Reset ──────────────────────────────────────────────────────────────────────
 
 function resetAll() {
-  state.ratio         = DEFAULTS.ratio;
-  state.bgColor       = DEFAULTS.bgColor;
-  state.bgGradient    = { ...DEFAULTS.bgGradient };
-  state.pillarCount   = DEFAULTS.pillarCount;
-  state.pillarColors  = [...DEFAULTS.pillarColors];
-  state.shape         = DEFAULTS.shape;
-  state.roundness     = DEFAULTS.roundness;
+  state.ratio           = DEFAULTS.ratio;
+  state.bgColor         = DEFAULTS.bgColor;
+  state.bgGradient      = { ...DEFAULTS.bgGradient, colors: [...DEFAULTS.bgGradient.colors] };
+  state.pillarCount     = DEFAULTS.pillarCount;
+  state.pillarColors    = [...DEFAULTS.pillarColors];
+  state.shape           = DEFAULTS.shape;
+  state.roundness       = DEFAULTS.roundness;
   state.pillarWidthPct  = DEFAULTS.pillarWidthPct;
   state.pillarHeightPct = DEFAULTS.pillarHeightPct;
   state.overlapPct      = DEFAULTS.overlapPct;
   state.shadePct        = DEFAULTS.shadePct;
   state.stackReversed   = DEFAULTS.stackReversed;
   state.flipped         = DEFAULTS.flipped;
-
   syncUI();
   buildPillarSwatches();
   redraw();
 }
 
-// Randomize themed palette
+// ── Randomize ──────────────────────────────────────────────────────────────────
+
 function hslToHex(h, s, l) {
   h = ((h % 360) + 360) % 360;
   s /= 100; l /= 100;
@@ -1103,18 +1263,15 @@ function hslToHex(h, s, l) {
 
 function generateThemedPalette(count) {
   const strategies = ['monochrome', 'analogous', 'complementary', 'triadic', 'split'];
-  const strategy = strategies[Math.floor(Math.random() * strategies.length)];
-  const baseHue = Math.random() * 360;
-  const baseSat = 50 + Math.random() * 40; // 50-90
-
-  // Decide if dark or light theme
-  const isDark = Math.random() < 0.35;
-  const colors = [];
+  const strategy   = strategies[Math.floor(Math.random() * strategies.length)];
+  const baseHue    = Math.random() * 360;
+  const baseSat    = 50 + Math.random() * 40;
+  const isDark     = Math.random() < 0.35;
+  const colors     = [];
 
   for (let i = 0; i < count; i++) {
-    const t = i / (count - 1); // 0 to 1
+    const t = i / (count - 1);
     let hue, sat, lit;
-
     switch (strategy) {
       case 'monochrome':
         hue = baseHue + (Math.random() * 10 - 5);
@@ -1142,15 +1299,13 @@ function generateThemedPalette(count) {
         lit = isDark ? 68 - t * 55 : 80 - t * 55;
         break;
     }
-
     sat = Math.max(20, Math.min(100, sat));
     lit = Math.max(5, Math.min(95, lit));
     colors.push(hslToHex(hue, sat, lit));
   }
 
-  // Background: very light tint or very dark based on theme
   const bg = isDark
-    ? hslToHex(baseHue, 5 + Math.random() * 10, 2 + Math.random() * 4)
+    ? hslToHex(baseHue, 5  + Math.random() * 10, 2 + Math.random() * 4)
     : hslToHex(baseHue, 10 + Math.random() * 20, 94 + Math.random() * 5);
 
   return { bg, colors };
@@ -1159,22 +1314,16 @@ function generateThemedPalette(count) {
 document.getElementById('randomize-btn').addEventListener('click', () => {
   const { bg, colors } = generateThemedPalette(state.pillarCount);
   state.bgColor = bg;
-  state.bgGradient.enabled = Math.random() < 0.3; // 30% chance of gradient
+  state.bgGradient.enabled = Math.random() < 0.3;
   if (state.bgGradient.enabled) {
     state.bgGradient.colors = [bg, hslToHex(Math.random() * 360, 20 + Math.random() * 30, 80 + Math.random() * 15)];
   }
   state.pillarColors = colors;
-
-  document.getElementById('bg-swatch').style.background = state.bgColor;
-  document.getElementById('bg-hex').textContent         = state.bgColor.toUpperCase();
-  document.getElementById('bg-color-input').value       = state.bgColor;
-
-  buildPillarSwatches();
   syncUI();
+  buildPillarSwatches();
   redraw();
 });
 
-// Reverse color order
 document.getElementById('reverse-order-btn').addEventListener('click', () => {
   state.pillarColors.reverse();
   buildPillarSwatches();
@@ -1184,65 +1333,80 @@ document.getElementById('reverse-order-btn').addEventListener('click', () => {
 // ── SVG Generation ─────────────────────────────────────────────────────────────
 
 function generateSVG(w, h) {
-  const { bgColor, bgGradient, pillarCount, pillarColors, roundness, pillarWidthPct, pillarHeightPct, overlapPct, shadePct, flipped } = state;
+  const {
+    bgColor, bgGradient,
+    pillarCount, pillarColors,
+    shape, roundness,
+    pillarWidthPct, pillarHeightPct,
+    overlapPct, flipped, stackReversed,
+  } = state;
 
+  let defs = '';
   let bgFill = bgColor;
+
   if (bgGradient.enabled) {
     const dir = bgGradient.direction;
-    let x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-    switch (dir) {
-      case 'to right': x2 = w; break;
-      case 'to bottom': y2 = h; break;
-      case 'to bottom right': x2 = w; y2 = h; break;
-    }
-    bgFill = `url(#bgGradient)`;
+    let x1 = '0%', y1 = '0%', x2 = '0%', y2 = '0%';
+    if (dir === 'to right')         { x2 = '100%'; }
+    else if (dir === 'to bottom')   { y2 = '100%'; }
+    else if (dir === 'to bottom right') { x2 = '100%'; y2 = '100%'; }
+    defs = `<defs><linearGradient id="bg" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
+      <stop offset="0%" stop-color="${bgGradient.colors[0]}" />
+      <stop offset="100%" stop-color="${bgGradient.colors[1]}" />
+    </linearGradient></defs>`;
+    bgFill = 'url(#bg)';
   }
 
-  let svg = `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">`;
-
-  if (bgGradient.enabled) {
-    svg += `<defs><linearGradient id="bgGradient" x1="${0}" y1="${0}" x2="${bgGradient.direction === 'to right' ? w : bgGradient.direction === 'to bottom right' ? w : 0}" y2="${bgGradient.direction === 'to bottom' ? h : bgGradient.direction === 'to bottom right' ? h : 0}">`;
-    svg += `<stop offset="0%" stop-color="${bgGradient.colors[0]}" />`;
-    svg += `<stop offset="100%" stop-color="${bgGradient.colors[1]}" />`;
-    svg += `</linearGradient></defs>`;
-  }
-
+  let svg = `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">${defs}`;
   svg += `<rect width="${w}" height="${h}" fill="${bgFill}" />`;
 
-  // Pillars
   const pillarW = flipped ? h * pillarWidthPct / 100 : w * pillarWidthPct / 100;
   const pillarH = flipped ? w * pillarHeightPct / 100 : h * pillarHeightPct / 100;
-  const step = pillarW * (1 - overlapPct / 100);
-  const totalW = pillarW + step * (pillarCount - 1);
-  const rx = (pillarW / 2) * (roundness / 100);
+  const step    = pillarW * (1 - overlapPct / 100);
+  const totalW  = pillarW + step * (pillarCount - 1);
+  const rx      = (pillarW / 2) * (roundness / 100);
 
-  const drawOrder = state.stackReversed
+  const drawOrder = stackReversed
     ? Array.from({ length: pillarCount }, (_, k) => pillarCount - 1 - k)
     : Array.from({ length: pillarCount }, (_, k) => k);
 
   if (flipped) {
     const startY = (h - totalW) / 2;
     const startX = (w - pillarH) / 2;
-
-    for (let di = 0; di < drawOrder.length; di++) {
-      const i = drawOrder[di];
+    for (const i of drawOrder) {
       const y = startY + i * step;
       const color = pillarColors[i] !== undefined ? pillarColors[i] : pillarColors[pillarColors.length - 1];
-      svg += `<rect x="${startX}" y="${y}" width="${pillarH}" height="${pillarW}" fill="${color}" rx="${rx}" />`;
+      if (shape === 'triangle') {
+        svg += `<polygon points="${startX + pillarH / 2},${y} ${startX},${y + pillarW} ${startX + pillarH},${y + pillarW}" fill="${color}" />`;
+      } else if (shape === 'circle') {
+        const cx = startX + pillarH / 2;
+        const cy = y + pillarW / 2;
+        const r2 = Math.min(pillarH, pillarW) / 2;
+        svg += `<circle cx="${cx}" cy="${cy}" r="${r2}" fill="${color}" />`;
+      } else {
+        svg += `<rect x="${startX}" y="${y}" width="${pillarH}" height="${pillarW}" fill="${color}" rx="${rx}" />`;
+      }
     }
   } else {
     const startX = (w - totalW) / 2;
     const startY = (h - pillarH) / 2;
-
-    for (let di = 0; di < drawOrder.length; di++) {
-      const i = drawOrder[di];
+    for (const i of drawOrder) {
       const x = startX + i * step;
       const color = pillarColors[i] !== undefined ? pillarColors[i] : pillarColors[pillarColors.length - 1];
-      svg += `<rect x="${x}" y="${startY}" width="${pillarW}" height="${pillarH}" fill="${color}" rx="${rx}" />`;
+      if (shape === 'triangle') {
+        svg += `<polygon points="${x + pillarW / 2},${startY} ${x},${startY + pillarH} ${x + pillarW},${startY + pillarH}" fill="${color}" />`;
+      } else if (shape === 'circle') {
+        const cx = x + pillarW / 2;
+        const cy = startY + pillarH / 2;
+        const r2 = Math.min(pillarW, pillarH) / 2;
+        svg += `<circle cx="${cx}" cy="${cy}" r="${r2}" fill="${color}" />`;
+      } else {
+        svg += `<rect x="${x}" y="${startY}" width="${pillarW}" height="${pillarH}" fill="${color}" rx="${rx}" />`;
+      }
     }
   }
 
-  svg += `</svg>`;
+  svg += '</svg>';
   return svg;
 }
 
@@ -1250,143 +1414,85 @@ function generateSVG(w, h) {
 
 function getExportDims() {
   const res = document.getElementById('export-resolution').value;
-  if (res === 'custom') {
-    // For now, use current ratio dims
-    return RATIO_DIMS[state.ratio];
-  }
   const [w, h] = res.split('x').map(Number);
   return { w, h };
 }
 
-function showSpinner(show) {
+function showExportSpinner(show) {
   const btn = document.getElementById('export-btn');
   const existing = btn.querySelector('.spinner');
   if (show) {
     if (!existing) {
-      const spinner = document.createElement('div');
+      const spinner = document.createElement('span');
       spinner.className = 'spinner';
       btn.appendChild(spinner);
     }
+    btn.disabled = true;
   } else {
     if (existing) existing.remove();
+    btn.disabled = false;
   }
 }
 
 document.getElementById('export-btn').addEventListener('click', () => {
   const btn = document.getElementById('export-btn');
-  btn.disabled    = true;
-  btn.textContent = 'Exporting\u2026';
-  showSpinner(true);
+  const origText = btn.textContent;
+  btn.textContent = 'Exporting…';
+  showExportSpinner(true);
 
   const format = document.getElementById('export-format').value;
-  const dims = getExportDims();
+  const dims   = getExportDims();
 
-  // Defer to allow the button state to repaint before the heavy canvas work
   setTimeout(() => {
     if (format === 'svg') {
-      // Generate SVG
-      const svg = generateSVG(dims.w, dims.h);
+      const svg  = generateSVG(dims.w, dims.h);
       const blob = new Blob([svg], { type: 'image/svg+xml' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `wallpaper-${dims.w}x${dims.h}.svg`;
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url; a.download = `wallpaper-${dims.w}x${dims.h}.svg`;
       a.click();
       URL.revokeObjectURL(url);
-      btn.disabled = false;
-      btn.textContent = 'Export';
-      showSpinner(false);
+      btn.textContent = origText;
+      showExportSpinner(false);
     } else {
-      const offscreen = document.createElement('canvas');
-      offscreen.width  = dims.w;
-      offscreen.height = dims.h;
-      const offCtx = offscreen.getContext('2d');
-
-      // For large canvases, show progress
-      if (dims.w * dims.h > 20000000) { // ~20M pixels
-        btn.textContent = 'Exporting (large image, please wait)\u2026';
-      }
-
+      const offscreen    = document.createElement('canvas');
+      offscreen.width    = dims.w;
+      offscreen.height   = dims.h;
+      const offCtx       = offscreen.getContext('2d');
       draw(offCtx, dims.w, dims.h);
 
       const mime = format === 'jpg' ? 'image/jpeg' : 'image/png';
-      const ext = format;
       offscreen.toBlob((blob) => {
         const url = URL.createObjectURL(blob);
         const a   = document.createElement('a');
-        a.href     = url;
-        a.download = `wallpaper-${dims.w}x${dims.h}.${ext}`;
+        a.href = url; a.download = `wallpaper-${dims.w}x${dims.h}.${format}`;
         a.click();
         URL.revokeObjectURL(url);
-
-        btn.disabled    = false;
-        btn.textContent = 'Export';
-        showSpinner(false);
-      }, mime);
+        btn.textContent = origText;
+        showExportSpinner(false);
+      }, mime, format === 'jpg' ? 0.95 : undefined);
     }
   }, 16);
 });
 
+// ── Fullscreen ─────────────────────────────────────────────────────────────────
+
 document.getElementById('fullscreen-btn').addEventListener('click', () => {
-  const canvasArea = document.getElementById('canvas-area');
-  if (canvasArea.requestFullscreen) {
-    canvasArea.requestFullscreen();
-  }
+  if (canvasArea.requestFullscreen) canvasArea.requestFullscreen();
 });
 
 document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement) {
-    redraw(); // Redraw on exit fullscreen
-  }
+  if (!document.fullscreenElement) redraw();
+  else redraw();
 });
 
-// ── Project Save/Load ───────────────────────────────────────────────────────────
+// ── Project Save / Load ────────────────────────────────────────────────────────
 
-document.getElementById('save-project-btn').addEventListener('click', () => {
-  const config = {
+function stateSnapshot() {
+  return {
     ratio: state.ratio,
     bgColor: state.bgColor,
-    bgGradient: { ...state.bgGradient },
-    pillarCount: state.pillarCount,
-    pillarColors: [...state.pillarColors],
-    roundness: state.roundness,
-    pillarWidthPct: state.pillarWidthPct,
-    pillarHeightPct: state.pillarHeightPct,
-    overlapPct: state.overlapPct,
-    shadePct: state.shadePct,
-    stackReversed: state.stackReversed,
-    flipped: state.flipped,
-    zoom: state.zoom,
-    panX: state.panX,
-    panY: state.panY,
-  };
-  localStorage.setItem('wallpaper-project', JSON.stringify(config));
-  alert('Project saved to local storage.');
-});
-
-document.getElementById('load-project-btn').addEventListener('click', () => {
-  const saved = localStorage.getItem('wallpaper-project');
-  if (saved) {
-    try {
-      const cfg = JSON.parse(saved);
-      Object.assign(state, cfg);
-      syncUI();
-      buildPillarSwatches();
-      redraw();
-      alert('Project loaded from local storage.');
-    } catch {
-      alert('Failed to load project.');
-    }
-  } else {
-    alert('No saved project found.');
-  }
-});
-
-document.getElementById('share-btn').addEventListener('click', () => {
-  const config = {
-    ratio: state.ratio,
-    bgColor: state.bgColor,
-    bgGradient: { ...state.bgGradient },
+    bgGradient: { ...state.bgGradient, colors: [...state.bgGradient.colors] },
     pillarCount: state.pillarCount,
     pillarColors: [...state.pillarColors],
     shape: state.shape,
@@ -1398,102 +1504,97 @@ document.getElementById('share-btn').addEventListener('click', () => {
     stackReversed: state.stackReversed,
     flipped: state.flipped,
   };
-  const encoded = btoa(JSON.stringify(config));
+}
+
+document.getElementById('save-project-btn').addEventListener('click', () => {
+  localStorage.setItem('wallpaper-project', JSON.stringify(stateSnapshot()));
+  alert('Project saved to local storage.');
+});
+
+document.getElementById('load-project-btn').addEventListener('click', () => {
+  const saved = localStorage.getItem('wallpaper-project');
+  if (!saved) { alert('No saved project found.'); return; }
+  try {
+    const cfg = JSON.parse(saved);
+    Object.assign(state, cfg);
+    syncUI();
+    buildPillarSwatches();
+    redraw();
+    alert('Project loaded.');
+  } catch {
+    alert('Failed to load project.');
+  }
+});
+
+document.getElementById('share-btn').addEventListener('click', () => {
+  const encoded = btoa(JSON.stringify(stateSnapshot()));
   const url = window.location.origin + window.location.pathname + '?config=' + encoded;
   navigator.clipboard.writeText(url).then(() => {
     alert('Shareable link copied to clipboard.');
+  }).catch(() => {
+    prompt('Copy this link:', url);
   });
 });
+
+// ── Export / Import Config ─────────────────────────────────────────────────────
+
+document.getElementById('export-config-btn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(stateSnapshot(), null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'wallpaper-config.json';
+  a.click();
+  URL.revokeObjectURL(url);
 });
 
-// ── Direct manipulation ─────────────────────────────────────────────────────────
-
-let isDraggingPillar = false;
-let draggedPillarIndex = -1;
-
-canvas.addEventListener('mousedown', (e) => {
-  const pillarIndex = hitTestCanvas(e.clientX, e.clientY);
-  if (pillarIndex !== -1) {
-    if (e.shiftKey) { // Shift+click to drag reorder
-      isDraggingPillar = true;
-      draggedPillarIndex = pillarIndex;
-      canvas.style.cursor = 'grabbing';
-      e.preventDefault();
-    } else {
-      const trigger = document.getElementById('color-pick-trigger');
-      trigger.htmlFor = `pillar-input-${pillarIndex}`;
-      trigger.click();
-    }
-  }
+document.getElementById('import-config-btn').addEventListener('click', () => {
+  document.getElementById('import-config-input').click();
 });
 
-document.addEventListener('mousemove', (e) => {
-  if (isDraggingPillar) {
-    // For reordering, calculate new position
-    const rect = canvas.getBoundingClientRect();
-    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const my = (e.clientY - rect.top) * (canvas.height / rect.height);
-    // Calculate which position it's dragged to
-    const { pillarCount, pillarWidthPct, pillarHeightPct, overlapPct, flipped } = state;
-    const pillarW = flipped ? canvas.height * pillarWidthPct / 100 : canvas.width * pillarWidthPct / 100;
-    const step = pillarW * (1 - overlapPct / 100);
-    const totalW = pillarW + step * (pillarCount - 1);
-    let newIndex = draggedPillarIndex;
-    if (flipped) {
-      const startY = (canvas.height - totalW) / 2;
-      newIndex = Math.round((my - startY) / step);
-    } else {
-      const startX = (canvas.width - totalW) / 2;
-      newIndex = Math.round((mx - startX) / step);
-    }
-    newIndex = Math.max(0, Math.min(pillarCount - 1, newIndex));
-    if (newIndex !== draggedPillarIndex) {
-      // Swap
-      [state.pillarColors[draggedPillarIndex], state.pillarColors[newIndex]] = [state.pillarColors[newIndex], state.pillarColors[draggedPillarIndex]];
-      draggedPillarIndex = newIndex;
+document.getElementById('import-config-input').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const cfg = JSON.parse(ev.target.result);
+      if (cfg.ratio && RATIO_DIMS[cfg.ratio])                    state.ratio           = cfg.ratio;
+      if (typeof cfg.bgColor === 'string')                       state.bgColor         = cfg.bgColor;
+      if (cfg.bgGradient && typeof cfg.bgGradient === 'object')  state.bgGradient      = { ...cfg.bgGradient, colors: [...(cfg.bgGradient.colors || ['#F2EDDF','#FFFFFF'])] };
+      if (typeof cfg.pillarCount === 'number')                   state.pillarCount     = cfg.pillarCount;
+      if (Array.isArray(cfg.pillarColors))                       state.pillarColors    = [...cfg.pillarColors];
+      if (typeof cfg.shape === 'string')                         state.shape           = cfg.shape;
+      if (typeof cfg.roundness === 'number')                     state.roundness       = cfg.roundness;
+      if (typeof cfg.pillarWidthPct === 'number')                state.pillarWidthPct  = cfg.pillarWidthPct;
+      if (typeof cfg.pillarHeightPct === 'number')               state.pillarHeightPct = cfg.pillarHeightPct;
+      if (typeof cfg.overlapPct === 'number')                    state.overlapPct      = cfg.overlapPct;
+      if (typeof cfg.shadePct === 'number')                      state.shadePct        = cfg.shadePct;
+      if (typeof cfg.stackReversed === 'boolean')                state.stackReversed   = cfg.stackReversed;
+      if (typeof cfg.flipped === 'boolean')                      state.flipped         = cfg.flipped;
+      syncUI();
       buildPillarSwatches();
       redraw();
+    } catch {
+      alert('Could not load configuration — invalid JSON file.');
     }
-  }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
 });
 
-document.addEventListener('mouseup', () => {
-  isDraggingPillar = false;
-  canvas.style.cursor = 'crosshair';
-});
-
-canvas.style.cursor = 'crosshair';
-});
-
-canvas.style.cursor = state.zoom > 1 ? 'grab' : 'crosshair';
-
-
-
-
-
-document.getElementById('pan-reset-btn').addEventListener('click', () => {
-  state.panX = 0;
-  state.panY = 0;
-  fitCanvas();
-});
-
-// ── Undo/Redo buttons ──────────────────────────────────────────────────────────
+// ── Undo / Redo buttons ────────────────────────────────────────────────────────
 
 document.getElementById('undo-btn').addEventListener('click', undo);
 document.getElementById('redo-btn').addEventListener('click', redo);
 
-// Keyboard shortcuts
+// ── Keyboard shortcuts ─────────────────────────────────────────────────────────
+
 document.addEventListener('keydown', (e) => {
   if (e.ctrlKey || e.metaKey) {
     switch (e.key) {
       case 'z':
-        if (!e.shiftKey) {
-          e.preventDefault();
-          undo();
-        } else {
-          e.preventDefault();
-          redo();
-        }
+        e.preventDefault();
+        e.shiftKey ? redo() : undo();
         break;
       case 'y':
         e.preventDefault();
@@ -1511,46 +1612,32 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         resetAll();
         break;
-      case 'i':
-        e.preventDefault();
-        document.getElementById('import-config-btn').click();
-        break;
     }
-  } else {
-    if (e.key === 'Escape') {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
-    }
+  } else if (e.key === 'Escape' && document.fullscreenElement) {
+    document.exitFullscreen();
   }
 });
 
-// ── Event listeners ────────────────────────────────────────────────────────────
+// ── Event Listeners ────────────────────────────────────────────────────────────
 
 // Ratio
 document.getElementById('ratio-group').addEventListener('click', (e) => {
   const btn = e.target.closest('.ratio-btn');
-  if (!btn) return;
+  if (!btn || !btn.dataset.ratio) return;
   state.ratio = btn.dataset.ratio;
-  document.getElementById('ratio-group').querySelectorAll('.ratio-btn').forEach((b) => {
-    b.classList.toggle('active', b === btn);
-  });
-  saveState();
+  syncUI();
   redraw();
-  updateUndoRedoButtons();
 });
 
 // Stack order
 document.getElementById('stack-left-btn').addEventListener('click', () => {
   state.stackReversed = true;
-  document.getElementById('stack-left-btn').classList.add('active');
-  document.getElementById('stack-right-btn').classList.remove('active');
+  syncUI();
   redraw();
 });
 document.getElementById('stack-right-btn').addEventListener('click', () => {
   state.stackReversed = false;
-  document.getElementById('stack-right-btn').classList.add('active');
-  document.getElementById('stack-left-btn').classList.remove('active');
+  syncUI();
   redraw();
 });
 
@@ -1558,12 +1645,12 @@ document.getElementById('stack-right-btn').addEventListener('click', () => {
 document.getElementById('bg-type-group').addEventListener('click', (e) => {
   const btn = e.target.closest('.ratio-btn');
   if (!btn) return;
-  state.bgGradient.enabled = btn.id === 'bg-gradient-btn';
+  state.bgGradient.enabled = (btn.id === 'bg-gradient-btn');
   syncUI();
   redraw();
 });
 
-// Background color
+// Background solid color
 document.getElementById('bg-color-input').addEventListener('input', (e) => {
   state.bgColor = e.target.value;
   document.getElementById('bg-swatch').style.background = state.bgColor;
@@ -1571,7 +1658,7 @@ document.getElementById('bg-color-input').addEventListener('input', (e) => {
   redraw();
 });
 
-// Background gradient colors
+// Gradient colors
 document.getElementById('bg-gradient-color1-input').addEventListener('input', (e) => {
   state.bgGradient.colors[0] = e.target.value;
   document.getElementById('bg-gradient-swatch1').style.background = e.target.value;
@@ -1584,8 +1671,6 @@ document.getElementById('bg-gradient-color2-input').addEventListener('input', (e
   document.getElementById('bg-gradient-hex2').textContent = e.target.value.toUpperCase();
   redraw();
 });
-
-// Background gradient direction
 document.getElementById('bg-gradient-direction').addEventListener('change', (e) => {
   state.bgGradient.direction = e.target.value;
   redraw();
@@ -1595,10 +1680,8 @@ document.getElementById('bg-gradient-direction').addEventListener('change', (e) 
 document.getElementById('pillar-count-slider').addEventListener('input', (e) => {
   const newCount = parseInt(e.target.value, 10);
   if (newCount > state.pillarCount) {
-    const last = state.pillarColors[state.pillarColors.length - 1];
-    for (let i = state.pillarCount; i < newCount; i++) {
-      state.pillarColors.push(last);
-    }
+    const last = state.pillarColors[state.pillarColors.length - 1] || '#000000';
+    for (let i = state.pillarCount; i < newCount; i++) state.pillarColors.push(last);
   } else {
     state.pillarColors = state.pillarColors.slice(0, newCount);
   }
@@ -1642,119 +1725,28 @@ document.getElementById('shade-slider').addEventListener('input', (e) => {
   redraw();
 });
 
-// Flip (orientation)
+// Orientation / Flip
 document.getElementById('flip-off-btn').addEventListener('click', () => {
   state.flipped = false;
-  state.ratio = '16:9';
-  document.getElementById('flip-off-btn').classList.add('active');
-  document.getElementById('flip-on-btn').classList.remove('active');
-  document.querySelectorAll('#ratio-group .ratio-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.ratio === state.ratio);
-  });
+  if (state.ratio === '9:16') state.ratio = '16:9';
+  syncUI();
   redraw();
 });
 document.getElementById('flip-on-btn').addEventListener('click', () => {
   state.flipped = true;
-  state.ratio = '9:16';
-  document.getElementById('flip-on-btn').classList.add('active');
-  document.getElementById('flip-off-btn').classList.remove('active');
-  document.querySelectorAll('#ratio-group .ratio-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.ratio === state.ratio);
-  });
+  if (state.ratio === '16:9') state.ratio = '9:16';
+  syncUI();
   redraw();
 });
 
 // Reset
 document.getElementById('reset-btn').addEventListener('click', resetAll);
 
-// Export config
-document.getElementById('export-config-btn').addEventListener('click', () => {
-  const config = {
-    ratio: state.ratio,
-    bgColor: state.bgColor,
-    bgGradient: { ...state.bgGradient },
-    pillarCount: state.pillarCount,
-    pillarColors: [...state.pillarColors],
-    shape: state.shape,
-    roundness: state.roundness,
-    pillarWidthPct: state.pillarWidthPct,
-    pillarHeightPct: state.pillarHeightPct,
-    overlapPct: state.overlapPct,
-    shadePct: state.shadePct,
-    stackReversed: state.stackReversed,
-    flipped: state.flipped,
-  };
-  const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href     = url;
-  a.download = 'wallpaper-config.json';
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-// Import config
-document.getElementById('import-config-btn').addEventListener('click', () => {
-  document.getElementById('import-config-input').click();
-});
-document.getElementById('import-config-input').addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try {
-      const cfg = JSON.parse(ev.target.result);
-      if (cfg.ratio        && RATIO_DIMS[cfg.ratio])             state.ratio         = cfg.ratio;
-      if (typeof cfg.bgColor        === 'string')                state.bgColor       = cfg.bgColor;
-      if (cfg.bgGradient && typeof cfg.bgGradient === 'object')  state.bgGradient    = { ...cfg.bgGradient };
-      if (typeof cfg.pillarCount    === 'number')                state.pillarCount   = cfg.pillarCount;
-      if (Array.isArray(cfg.pillarColors))                       state.pillarColors  = [...cfg.pillarColors];
-      if (typeof cfg.shape          === 'string')                state.shape         = cfg.shape;
-      if (typeof cfg.roundness      === 'number')                state.roundness     = cfg.roundness;
-      if (typeof cfg.pillarWidthPct === 'number')                state.pillarWidthPct  = cfg.pillarWidthPct;
-      if (typeof cfg.pillarHeightPct === 'number')               state.pillarHeightPct = cfg.pillarHeightPct;
-      if (typeof cfg.overlapPct     === 'number')                state.overlapPct    = cfg.overlapPct;
-      if (typeof cfg.shadePct       === 'number')                state.shadePct      = cfg.shadePct;
-      if (typeof cfg.stackReversed  === 'boolean')               state.stackReversed = cfg.stackReversed;
-      if (typeof cfg.flipped         === 'boolean')               state.flipped       = cfg.flipped;
-      syncUI();
-      buildPillarSwatches();
-      redraw();
-    } catch {
-      alert('Could not load configuration — invalid JSON file.');
-    }
-    // Reset input so the same file can be re-imported if needed
-    e.target.value = '';
-  };
-  reader.readAsText(file);
-});
-
 // Window resize
 window.addEventListener('resize', redraw);
 
-// ── Init ───────────────────────────────────────────────────────────────────────
+// ── Mobile Tabs ────────────────────────────────────────────────────────────────
 
-buildPresets();
-buildPillarSwatches();
-syncUI();
-
-// Load from URL if present
-const urlParams = new URLSearchParams(window.location.search);
-const configParam = urlParams.get('config');
-if (configParam) {
-  try {
-    const cfg = JSON.parse(atob(configParam));
-    Object.assign(state, cfg);
-    syncUI();
-    buildPillarSwatches();
-  } catch (e) {
-    console.error('Failed to load config from URL', e);
-  }
-}
-
-redraw();
-
-// ── Mobile tabs ───────────────────────────────────────────────────────────────
 (function () {
   const tabs = document.querySelectorAll('.mobile-tab');
   document.getElementById('left-panel').classList.add('mobile-active');
@@ -1768,7 +1760,28 @@ redraw();
     });
   });
 }());
-</script>
 
+// ── Init ───────────────────────────────────────────────────────────────────────
+
+buildPresets();
+buildPillarSwatches();
+syncUI();
+
+// Load from URL if present
+const urlParams   = new URLSearchParams(window.location.search);
+const configParam = urlParams.get('config');
+if (configParam) {
+  try {
+    const cfg = JSON.parse(atob(configParam));
+    Object.assign(state, cfg);
+    syncUI();
+    buildPillarSwatches();
+  } catch (err) {
+    console.error('Failed to load config from URL', err);
+  }
+}
+
+redraw();
+</script>
 </body>
 </html>
